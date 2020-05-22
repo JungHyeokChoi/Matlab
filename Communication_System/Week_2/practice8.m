@@ -1,0 +1,1 @@
+result = randint(5,5);

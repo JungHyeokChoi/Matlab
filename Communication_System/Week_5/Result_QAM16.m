@@ -1,0 +1,43 @@
+clear all;
+close all;
+
+N = 200000;
+SNR = 0:2:20;
+
+R = 1;
+
+for n=1:length(SNR)
+    msg = randint(1,N);
+    x = FEC_enc(msg,R);
+    y = QAM16_mapper(x);
+    
+    z = AWGN(y,SNR(n));
+    
+    x_ = QAM16_demapper(z);
+    msg_ = FEC_dec(x_,R);
+    
+    err_count = sum(abs(msg-msg_));
+    BER(n) = err_count/N;
+end
+
+semilogy(SNR,BER,'o-');
+hold on;
+grid on;
+
+R = 3;
+
+for n=1:length(SNR)
+    msg = randint(1,N);
+    x = FEC_enc(msg,R);
+    y = QAM16_mapper(x);
+    
+    z = AWGN(y,SNR(n));
+    
+    x_ = QAM16_demapper(z);
+    msg_ = FEC_dec(x_,R);
+    
+    err_count = sum(abs(msg-msg_));
+    BER(n) = err_count/N;
+end
+
+semilogy(SNR,BER,'o-');
